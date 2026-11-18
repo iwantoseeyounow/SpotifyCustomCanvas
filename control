@@ -1,0 +1,9 @@
+Package: com.custom.spotifycanvas
+Name: SpotifyCustomCanvas
+Version: 1.0.0
+Architecture: iphoneos-arm64
+Description: Custom per-song Canvas videos for Spotify
+Maintainer: Custom
+Author: Custom
+Section: Tweaks
+Depends: mobilesubstrate
