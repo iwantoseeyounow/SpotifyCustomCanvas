@@ -7,28 +7,25 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Setup Theos
-        run: |
-          git clone --recursive https://github.com $HOME/theos
-          mkdir -p $HOME/theos/toolchain/linux/iphone
-          curl -sL https://github.com | tar -xJ -C $HOME/theos/toolchain/linux/iphone
-          mkdir -p $HOME/theos/sdks
-          curl -sL https://github.com -o sdks.zip
-          unzip -q sdks.zip
-          mv sdks-master/*.sdk $HOME/theos/sdks/
-          rm -rf sdks.zip sdks-master
-          echo "THEOS=$HOME/theos" >> $GITHUB_ENV
+        uses: waruhachi/theos-action@v2.6.5
+        with:
+          theos-src: 'theos/theos'
+          theos-branch: 'master'
+          sdks-src: 'theos/sdks'
+          sdks-branch: 'master'
 
-      - name: Build .deb package
-        run: make package FINALPACKAGE=1
+      - name: Build Tweak
+        run: make clean package FINALPACKAGE=1
 
       - name: Upload .deb artifact
         uses: actions/upload-artifact@v4
         with:
           name: SpotifyCustomCanvas-deb
           path: packages/*.deb
+
