@@ -12,11 +12,18 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install Theos
+      - name: Install Dependencies & Theos
         run: |
           sudo apt-get update
-          sudo apt-get install -y fakeroot build-essential perl clang unzip curl git
-          bash -c "$(curl -fsSL https://githubusercontent.com)"
+          sudo apt-get install -y fakeroot build-essential perl clang unzip curl git libtinfo5 libxml2
+          git clone --recursive https://github.com $HOME/theos
+          mkdir -p $HOME/theos/toolchain/linux/iphone
+          curl -sL https://github.com | tar --lzma -x -C $HOME/theos/toolchain/linux/iphone
+          mkdir -p $HOME/theos/sdks
+          curl -sL https://github.com -o sdks.zip
+          unzip -q sdks.zip
+          mv sdks-master/*.sdk $HOME/theos/sdks/
+          rm -rf sdks.zip sdks-master
           echo "THEOS=$HOME/theos" >> $GITHUB_ENV
 
       - name: Build .deb package
