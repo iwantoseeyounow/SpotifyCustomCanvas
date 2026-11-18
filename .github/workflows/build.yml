@@ -15,7 +15,8 @@ jobs:
       - name: Install Dependencies & Theos
         run: |
           sudo apt-get update
-          sudo apt-get install -y fakeroot build-essential perl clang unzip curl git libtinfo5 libxml2
+          sudo apt-get install -y fakeroot build-essential perl clang unzip curl git libxml2 libtinfo6
+          sudo ln -sf /usr/lib/x86_64-linux-gnu/libtinfo.so.6 /usr/lib/x86_64-linux-gnu/libtinfo.so.5
           git clone --recursive https://github.com $HOME/theos
           mkdir -p $HOME/theos/toolchain/linux/iphone
           curl -sL https://github.com | tar --lzma -x -C $HOME/theos/toolchain/linux/iphone
